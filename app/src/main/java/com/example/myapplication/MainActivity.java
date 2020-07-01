@@ -18,5 +18,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void testgetRequest(View view ) throws ExecutionException, InterruptedException {
         System.out.println( okHttpUtil.getRequest("https://www.baidu.com"));
+        System.out.println("aa");
     }
 }
