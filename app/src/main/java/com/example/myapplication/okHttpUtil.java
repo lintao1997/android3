@@ -25,7 +25,7 @@ public class okHttpUtil {
             @Override
             public Object call() throws Exception {
                 Request request = new Request.Builder()
-                .url(url)
+                        .url(url)
                         .build();
                 Response response = okHttpClient.newCall(request).execute();
                 if(response.isSuccessful()&&response.body()!=null){
