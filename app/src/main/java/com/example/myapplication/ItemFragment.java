@@ -15,7 +15,13 @@ import android.view.ViewGroup;
 import com.example.myapplication.dummy.DummyContent;
 import com.example.myapplication.dummy.DummyContent.DummyItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A fragment representing a list of Items.
@@ -29,7 +35,7 @@ public class ItemFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private  OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,11 +67,11 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-
+        RecyclerView recyclerView = null;
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -73,6 +79,25 @@ public class ItemFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+        ArrayList<DummyItem> arrayList = new ArrayList<>();
+        try {
+            String result = okHttpUtil.getRequest("http://172.18.85.254:8080/auction/api/items/byOwner");
+            System.out.println(result);
+            JSONArray jsonArray = new JSONArray(result);
+            for (int i = 0 ; i<jsonArray.length() ; i++){
+                JSONObject jsonObject = jsonArray.optJSONObject(i);
+                DummyItem item = new DummyItem(String.valueOf(i+1),
+                                               jsonObject.getString("name"),"");
+                arrayList.add(item);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(arrayList,mListener));
         return view;
     }
 

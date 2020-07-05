@@ -2,9 +2,13 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
-public class ItemActivity extends AppCompatActivity {
+import com.example.myapplication.dummy.DummyContent;
+
+public class ItemActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,5 +19,15 @@ public class ItemActivity extends AppCompatActivity {
         .commit();
 
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    public void addItem(View view) {
+        Intent intent = new Intent(this,addItemsActivity.class);
+        startActivity(intent);
     }
 }
