@@ -52,6 +52,7 @@ public class addItemsActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    
                 }
                 break;
             case R.id.button5:
